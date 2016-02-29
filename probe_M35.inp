@@ -1,0 +1,107 @@
+TITLE
+sonda M35 (miniSipm)
+#define x_probe 0.
+#define y_probe 0.
+#define z_probe 0.34
+#define h_allu 0.0015
+* Set the defaults for precision simulations
+DEFAULTS                                                              PRECISIO
+* Define the beam characteristics
+BEAM         -0.0023                                                  ELECTRON
+* Define the beam position
+BEAMPOS           0.        0.        0.
+*if the source is needed
+*SOURCE           0.0      0.01       0.0        0.       0.0       0.0
+EMF
+EMFFIX        PTERPH      0.01       ABS      0.01  ALUMINUM      0.01NOPRINT
+EMFCUT        -1E-05      1E-6                VOID  @LASTREG
+EMFCUT        -1E-05      1E-6            HYDROGEN  @LASTMAT          PROD-CUT
+*RADDECAY          2.
+DELTARAY      1.0E-5                      HYDROGEN  @LASTMAT
+USERDUMP        100.       90.       0.0        1.                    DUMP
+OPT-PROD     2.95E-9    0.0826   3.0E-08    PTERPH                    SCINTILL
+OPT-PROD                                    PTERPH                    CERE-OFF
+OPT-PROP     1.0E-05    4.2E-5    6.0E-5    PTERPH                    WV-LIMIT
+OPT-PROP        1.65       0.5       0.2    PTERPH
+OPT-PROP                              0.  ALUMINUM                    METAL
+OPT-PROP         1.5                           ABS
+GEOBEGIN                                                              COMBNAME
+    0    0          
+* Black body
+SPH blkbody    0.0 0.0 0.0 100000.0
+* Void sphere
+SPH void       0.0 0.0 0.0 10000.0
+* ***probe
+!@what.1=x_probe
+!@what.2=y_probe
+ZCC cpter      0.0 0.0 0.25
+!@what.1=z_probe
+XYP pprobe     0.34
+!@what.1=z_probe+h_allu
+XYP pallu      0.3415
+!@what.1=x_probe
+!@what.2=y_probe
+ZCC cprobe     0.0 0.0 0.61
+!@what.1=z_probe+0.3+h_allu
+XYP ppterf     0.6415
+!@what.1=z_probe+0.3+h_allu+0.3
+XYP psipm      0.9415
+!@what.1=x_probe-0.05
+!@what.2=x_probe+0.05
+!@what.3=y_probe-0.05
+!@what.4=y_probe+0.05
+!@what.5=z_probe+0.2
+!@what.6=z_probe+0.3+h_allu+0.1
+RPP sipm       -0.05 0.05 -0.05 0.05 0.54 0.7414999999999999
+* **end probe
+END
+* Black hole
+BLKBODY      5 +blkbody -void
+* Void around
+VOID         5 +void -(+cprobe +psipm -pprobe)
+PROBE        5 +cprobe +psipm -pprobe -ppterf  -sipm
+PTERF        5 +cpter +ppterf -pallu
+ALL          5 +cprobe +pallu -pprobe
+PVC          5 +cprobe -cpter +ppterf -pallu
+PMT          5 +sipm -ppterf
+END
+GEOEND
+* ====================  material ====================
+MATERIAL                           1.223       26.                    PTERPH
+COMPOUND        18.0    CARBON      14.0  HYDROGEN                    PTERPH
+* 2-Methyl - 1,3-Butadiene
+* Chemical          H                      H
+* Formula             \                  /
+*                       C == C -- C == C
+*  C  H               /      |    |      \
+*   5  8            H      H-C-H  H        H
+*                            H
+MATERIAL                           0.681                              2_Methy_
+COMPOUND         8.0  HYDROGEN       5.0    CARBON                    2_Methy_
+* 600 Styrene
+* Chemical              H-C = C-H         H
+* Formula                /     \          |
+*                   H - C       C -- C == C
+*   C  H                 \\   //     |    |
+*    8  8                 C - C      H    H
+*                         |   |
+*                         H   H
+MATERIAL                           0.906                              Styrene
+COMPOUND         8.0  HYDROGEN       8.0    CARBON                    Styrene
+MATERIAL                            0.70                              ABS
+COMPOUND         1.0   Styrene       1.0  PACRYLNI       1.0  2_Methy_ABS
+ASSIGNMA    BLCKHOLE   BLKBODY
+ASSIGNMA    BLCKHOLE     PROBE
+ASSIGNMA         AIR      VOID
+ASSIGNMA    ALUMINUM       ALL
+ASSIGNMA         ABS       PVC
+ASSIGNMA     SILICON       PMT
+ASSIGNMA      PTERPH     PTERF
+* usrcall
+*USRICALL
+*USROCALL
+* Set the random number seed
+RANDOMIZ         1.0
+* Set the number of primary histories to be simulated in the run
+START
+STOP
