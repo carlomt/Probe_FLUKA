@@ -88,6 +88,10 @@ COMPOUND         8.0  HYDROGEN       5.0    CARBON                    2_Methy_
 *                         H   H
 MATERIAL                           0.906                              Styrene
 COMPOUND         8.0  HYDROGEN       8.0    CARBON                    Styrene
+* Polyacrylonitrile (C3_H3_N)n
+*
+MATERIAL                            1.17                              PACRYLNI
+COMPOUND         3.0  HYDROGEN       3.0    CARBON       1.0  NITROGENPACRYLNI
 MATERIAL                            0.70                              ABS
 COMPOUND         1.0   Styrene       1.0  PACRYLNI       1.0  2_Methy_ABS
 ASSIGNMA    BLCKHOLE   BLKBODY
