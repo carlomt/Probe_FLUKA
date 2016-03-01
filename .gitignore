@@ -29,3 +29,5 @@
 
 # flair files
 *.flair
+flair-autosave.pickle
+*~	

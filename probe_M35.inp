@@ -10,11 +10,11 @@ DEFAULTS                                                              PRECISIO
 BEAM         -0.0023                                                  ELECTRON
 * Define the beam position
 BEAMPOS           0.        0.        0.
-*if the source is needed
+* if the source is needed
 *SOURCE           0.0      0.01       0.0        0.       0.0       0.0
 EMF
 EMFFIX        PTERPH      0.01       ABS      0.01  ALUMINUM      0.01NOPRINT
-EMFCUT        -1E-05      1E-6                VOID  @LASTREG
+EMFCUT        -1E-05      1E-6                ARIA  @LASTREG
 EMFCUT        -1E-05      1E-6            HYDROGEN  @LASTMAT          PROD-CUT
 *RADDECAY          2.
 DELTARAY      1.0E-5                      HYDROGEN  @LASTMAT
@@ -53,17 +53,25 @@ XYP psipm      0.9415
 !@what.5=z_probe+0.2
 !@what.6=z_probe+0.3+h_allu+0.1
 RPP sipm       -0.05 0.05 -0.05 0.05 0.54 0.7414999999999999
+RCC bkg        0.0 0.0 -.85 0.0 0.0 0.85 1.0
+RCC srg        0.0 0.0 -0.4 0.0 0.0 0.45 .3
+RCC bkg1       0.0 0.0 -.85 0.0 0.0 0.85 1.0
+RCC srg1       0.0 0.0 -0.4 0.0 0.0 0.45 .3
 * **end probe
 END
 * Black hole
 BLKBODY      5 +blkbody -void
 * Void around
-VOID         5 +void -(+cprobe +psipm -pprobe)
+ARIA         5 +void -(+cprobe +psipm -pprobe) -bkg
 PROBE        5 +cprobe +psipm -pprobe -ppterf  -sipm
 PTERF        5 +cpter +ppterf -pallu
 ALL          5 +cprobe +pallu -pprobe
 PVC          5 +cprobe -cpter +ppterf -pallu
 PMT          5 +sipm -ppterf
+CAP_SOU      5 +bkg +srg
+SPA_SOU      5 +bkg1 -srg1
+* CAP_SOU
+* SPA_SOU
 END
 GEOEND
 * ====================  material ====================
@@ -96,11 +104,13 @@ MATERIAL                            0.70                              ABS
 COMPOUND         1.0   Styrene       1.0  PACRYLNI       1.0  2_Methy_ABS
 ASSIGNMA    BLCKHOLE   BLKBODY
 ASSIGNMA    BLCKHOLE     PROBE
-ASSIGNMA         AIR      VOID
+ASSIGNMA         AIR      ARIA
 ASSIGNMA    ALUMINUM       ALL
 ASSIGNMA         ABS       PVC
 ASSIGNMA     SILICON       PMT
+ASSIGNMA      SILVER   SPA_SOU
 ASSIGNMA      PTERPH     PTERF
+ASSIGNMA        GOLD   CAP_SOU
 * usrcall
 *USRICALL
 *USROCALL
