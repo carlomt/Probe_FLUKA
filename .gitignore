@@ -30,4 +30,14 @@
 # flair files
 *.flair
 flair-autosave.pickle
-*~	
+
+# tmp files
+*~
+*#
+
+# executables
+*.x
+
+# outputfiles
+*.root
+*.38
