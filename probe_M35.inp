@@ -31,21 +31,19 @@ GEOBEGIN                                                              COMBNAME
 SPH blkbody    0.0 0.0 0.0 100000.0
 * Void sphere
 SPH void       0.0 0.0 0.0 10000.0
-* ***probe
+****probe
+!@what.1=x_probe
+!@what.2=y_probe
+!@what.3=z_probe
+!@what.6=0.3+h_allu+0.2
+RCC rcprobe    0.0 0.0 0.34 0.0 0.0 0.5015000000000001 0.61
 !@what.1=x_probe
 !@what.2=y_probe
 ZCC cpter      0.0 0.0 0.25
-!@what.1=z_probe
-XYP pprobe     0.34
 !@what.1=z_probe+h_allu
 XYP pallu      0.3415
-!@what.1=x_probe
-!@what.2=y_probe
-ZCC cprobe     0.0 0.0 0.61
 !@what.1=z_probe+0.3+h_allu
 XYP ppterf     0.6415
-!@what.1=z_probe+0.3+h_allu+0.3
-XYP psipm      0.9415
 !@what.1=x_probe-0.05
 !@what.2=x_probe+0.05
 !@what.3=y_probe-0.05
@@ -62,11 +60,11 @@ END
 * Black hole
 BLKBODY      5 +blkbody -void
 * Void around
-ARIA         5 +void -(+cprobe +psipm -pprobe) -bkg
-PROBE        5 +cprobe +psipm -pprobe -ppterf  -sipm
+ARIA         5 +void -rcprobe -bkg
+PROBE        5 +rcprobe -ppterf -sipm
 PTERF        5 +cpter +ppterf -pallu
-ALL          5 +cprobe +pallu -pprobe
-PVC          5 +cprobe -cpter +ppterf -pallu
+ALL          5 +rcprobe +pallu 
+PVC          5 +rcprobe -cpter +ppterf -pallu
 PMT          5 +sipm -ppterf
 CAP_SOU      5 +bkg +srg
 SPA_SOU      5 +bkg1 -srg1
@@ -103,13 +101,15 @@ COMPOUND         3.0  HYDROGEN       3.0    CARBON       1.0  NITROGENPACRYLNI
 MATERIAL                            0.70                              ABS
 COMPOUND         1.0   Styrene       1.0  PACRYLNI       1.0  2_Methy_ABS
 ASSIGNMA    BLCKHOLE   BLKBODY
-ASSIGNMA    BLCKHOLE     PROBE
 ASSIGNMA         AIR      ARIA
+* materiali sonda
+ASSIGNMA    BLCKHOLE     PROBE
 ASSIGNMA    ALUMINUM       ALL
 ASSIGNMA         ABS       PVC
 ASSIGNMA     SILICON       PMT
-ASSIGNMA      SILVER   SPA_SOU
 ASSIGNMA      PTERPH     PTERF
+* end sonda
+ASSIGNMA      SILVER   SPA_SOU
 ASSIGNMA        GOLD   CAP_SOU
 * usrcall
 *USRICALL
