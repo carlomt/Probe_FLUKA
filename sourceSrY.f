@@ -3,6 +3,7 @@
 *
 *=== source ===========================================================*
 
+c
 c 1 raggio minimo sorgente
 c 2 raggio massimo
 c 3 seleziona isotopo: 1 solo Sr, 2 solo Y
