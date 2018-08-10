@@ -1,2 +1,2 @@
 # Probe_FLUKA
-Fluka simulation for the Probe
+Fluka Monte Carlo simulation for an intraoperative beta- radio-guided surgery Probe
